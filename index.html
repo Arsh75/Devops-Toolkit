@@ -1,17 +1,25 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DevOps Toolkit Dashboard — Personal productivity hub for IT professionals with DevOps tools, AI/LLM utilities, coding concepts, and system design architecture.">
+  <meta name="description"
+    content="DevOps Toolkit Dashboard — Personal productivity hub for IT professionals with DevOps tools, AI/LLM utilities, coding concepts, and system design architecture.">
   <title>DevOps Toolkit — Dashboard</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='85'>🚀</text></svg>">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='85'>🚀</text></svg>">
 </head>
+
 <body>
 
   <!-- Mobile Menu Toggle -->
-  <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">☰</button>
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
   <div class="app-container">
@@ -231,7 +239,8 @@
           </div>
           <div>
             <label class="input-label">Output</label>
-            <textarea class="tool-textarea output" id="jsonOutput" readonly placeholder="Result will appear here..."></textarea>
+            <textarea class="tool-textarea output" id="jsonOutput" readonly
+              placeholder="Result will appear here..."></textarea>
           </div>
         </div>
       </section>
@@ -255,7 +264,8 @@
           </div>
           <div>
             <label class="input-label">Output</label>
-            <textarea class="tool-textarea output" id="b64Output" readonly placeholder="Result will appear here..."></textarea>
+            <textarea class="tool-textarea output" id="b64Output" readonly
+              placeholder="Result will appear here..."></textarea>
           </div>
         </div>
       </section>
@@ -293,7 +303,9 @@
           <div class="cron-human" id="cronHuman">Every minute</div>
         </div>
         <div style="margin-top:16px;">
-          <div class="page-header" style="margin-bottom:12px;"><h2 style="font-size:1rem;color:var(--text-primary);">Quick Presets</h2></div>
+          <div class="page-header" style="margin-bottom:12px;">
+            <h2 style="font-size:1rem;color:var(--text-primary);">Quick Presets</h2>
+          </div>
           <div class="btn-group" id="cronPresets">
             <button class="btn btn-secondary" data-cron="0 * * * *">Every hour</button>
             <button class="btn btn-secondary" data-cron="0 0 * * *">Daily midnight</button>
@@ -316,7 +328,8 @@
           <p>Write regular expressions and test them against sample text with live match highlighting</p>
         </div>
         <div class="input-row">
-          <input type="text" class="input-field mono" id="regexPattern" placeholder="Enter regex pattern..." style="flex:1;">
+          <input type="text" class="input-field mono" id="regexPattern" placeholder="Enter regex pattern..."
+            style="flex:1;">
           <input type="text" class="input-field" id="regexFlags" placeholder="Flags" value="gi" style="width:80px;">
         </div>
         <div class="tool-panel">
@@ -342,9 +355,11 @@
           <div class="card-header"><span class="card-title">Add New Snippet</span></div>
           <div class="input-row">
             <input type="text" class="input-field" id="snippetTitle" placeholder="Snippet title..." style="flex:1;">
-            <input type="text" class="input-field" id="snippetTags" placeholder="Tags (comma-separated)" style="flex:1;">
+            <input type="text" class="input-field" id="snippetTags" placeholder="Tags (comma-separated)"
+              style="flex:1;">
           </div>
-          <textarea class="tool-textarea" id="snippetCode" placeholder="Paste your script or code here..." style="min-height:120px;margin-bottom:12px;"></textarea>
+          <textarea class="tool-textarea" id="snippetCode" placeholder="Paste your script or code here..."
+            style="min-height:120px;margin-bottom:12px;"></textarea>
           <button class="btn btn-primary" id="snippetSave">💾 Save Snippet</button>
         </div>
         <div class="search-bar">
@@ -415,7 +430,8 @@
             <button class="btn btn-copy" id="wfExport">📋 Export JSON</button>
           </div>
           <div class="workflow-canvas" id="workflowCanvas">
-            <svg id="workflowSvg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;"></svg>
+            <svg id="workflowSvg"
+              style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;"></svg>
           </div>
         </div>
       </section>
@@ -446,15 +462,18 @@
             </div>
             <div>
               <label class="input-label">API Base URL <small style="color:var(--text-muted);">(optional)</small></label>
-              <input type="text" class="input-field" id="llmBaseUrl" placeholder="https://api.openai.com/v1" style="width:100%;">
+              <input type="text" class="input-field" id="llmBaseUrl" placeholder="https://api.openai.com/v1"
+                style="width:100%;">
             </div>
             <div>
               <label class="input-label">Temperature: <span id="tempVal">0.7</span></label>
-              <input type="range" min="0" max="2" step="0.1" value="0.7" id="llmTemp" style="width:100%;accent-color:var(--accent-cyan);">
+              <input type="range" min="0" max="2" step="0.1" value="0.7" id="llmTemp"
+                style="width:100%;accent-color:var(--accent-cyan);">
             </div>
             <div>
               <label class="input-label">System Prompt</label>
-              <textarea class="tool-textarea" id="llmSystem" style="min-height:80px;" placeholder="You are a helpful DevOps assistant..."></textarea>
+              <textarea class="tool-textarea" id="llmSystem" style="min-height:80px;"
+                placeholder="You are a helpful DevOps assistant..."></textarea>
             </div>
             <button class="btn btn-primary" id="llmSaveSettings" style="margin-top:auto;">💾 Save Settings</button>
           </div>
@@ -549,7 +568,8 @@
         <div class="card" style="margin-bottom:20px;">
           <div class="card-header"><span class="card-title">Convert Unix → Human</span></div>
           <div class="input-row">
-            <input type="text" class="input-field mono" id="tsUnixInput" placeholder="Enter Unix timestamp..." style="flex:1;">
+            <input type="text" class="input-field mono" id="tsUnixInput" placeholder="Enter Unix timestamp..."
+              style="flex:1;">
             <button class="btn btn-primary" id="tsFromUnix">Convert</button>
           </div>
           <div class="timestamp-value" id="tsUnixResult" style="margin-top:10px;">—</div>
@@ -570,4 +590,5 @@
 
   <script src="app.js"></script>
 </body>
+
 </html>

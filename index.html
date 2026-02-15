@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DevOps Toolkit Dashboard — Personal productivity hub for IT professionals with DevOps tools, AI/LLM utilities, coding concepts, and system design architecture.">
+  <title>DevOps Toolkit — Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='85'>🚀</text></svg>">
+</head>
+<body>
+
+  <!-- Mobile Menu Toggle -->
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">☰</button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="app-container">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">🚀</div>
+        <div>
+          <div class="sidebar-title">DevOps Toolkit</div>
+          <div class="sidebar-subtitle">Personal Dashboard</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- Core -->
+        <div class="nav-category">
+          <div class="nav-category-label">Overview</div>
+          <div class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">🏠</span><span>Dashboard</span>
+          </div>
+        </div>
+
+        <!-- DevOps Utilities -->
+        <div class="nav-category">
+          <div class="nav-category-label">DevOps Utilities</div>
+          <div class="nav-item" data-page="commands">
+            <span class="nav-icon">💻</span><span>Command Library</span>
+          </div>
+          <div class="nav-item" data-page="json-yaml">
+            <span class="nav-icon">📄</span><span>JSON / YAML</span>
+          </div>
+          <div class="nav-item" data-page="base64-jwt">
+            <span class="nav-icon">🔐</span><span>Base64 / JWT</span>
+          </div>
+          <div class="nav-item" data-page="cron">
+            <span class="nav-icon">⏰</span><span>Cron Generator</span>
+          </div>
+          <div class="nav-item" data-page="regex">
+            <span class="nav-icon">🔍</span><span>Regex Tester</span>
+          </div>
+          <div class="nav-item" data-page="snippets">
+            <span class="nav-icon">📝</span><span>Script Snippets</span>
+          </div>
+          <div class="nav-item" data-page="http-codes">
+            <span class="nav-icon">🌐</span><span>HTTP Status Codes</span>
+          </div>
+        </div>
+
+        <!-- AI / LLM -->
+        <div class="nav-category">
+          <div class="nav-category-label">AI / LLM Tools</div>
+          <div class="nav-item" data-page="prompts">
+            <span class="nav-icon">🤖</span><span>Prompt Library</span>
+          </div>
+          <div class="nav-item" data-page="workflows">
+            <span class="nav-icon">🧠</span><span>Agent Workflows</span>
+          </div>
+          <div class="nav-item" data-page="playground">
+            <span class="nav-icon">⚡</span><span>LLM Playground</span>
+          </div>
+        </div>
+
+        <!-- Learning -->
+        <div class="nav-category">
+          <div class="nav-category-label">Learning & Reference</div>
+          <div class="nav-item" data-page="concepts">
+            <span class="nav-icon">📖</span><span>Coding Concepts</span>
+          </div>
+          <div class="nav-item" data-page="architecture">
+            <span class="nav-icon">🏗️</span><span>System Design</span>
+          </div>
+        </div>
+
+        <!-- Utilities -->
+        <div class="nav-category">
+          <div class="nav-category-label">Quick Utilities</div>
+          <div class="nav-item" data-page="uuid-pass">
+            <span class="nav-icon">🔑</span><span>UUID / Password</span>
+          </div>
+          <div class="nav-item" data-page="timestamp">
+            <span class="nav-icon">⏱️</span><span>Timestamp</span>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content" id="mainContent">
+
+      <!-- ===== 1. DASHBOARD HOME ===== -->
+      <section class="page-section active" id="page-dashboard">
+        <div class="clock-widget">
+          <div class="clock-greeting" id="clockGreeting">Good Evening</div>
+          <div class="clock-time" id="clockTime">00:00:00</div>
+          <div class="clock-date" id="clockDate">Sunday, February 15, 2026</div>
+        </div>
+
+        <div class="page-header">
+          <h1>Quick Launch</h1>
+          <p>Jump into any tool instantly</p>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="quick-card" data-goto="commands">
+            <span class="card-icon">💻</span>
+            <div class="card-label">Command Library</div>
+            <div class="card-desc">50+ DevOps commands</div>
+          </div>
+          <div class="quick-card" data-goto="json-yaml">
+            <span class="card-icon">📄</span>
+            <div class="card-label">JSON / YAML</div>
+            <div class="card-desc">Format & validate</div>
+          </div>
+          <div class="quick-card" data-goto="base64-jwt">
+            <span class="card-icon">🔐</span>
+            <div class="card-label">Base64 / JWT</div>
+            <div class="card-desc">Encode & decode</div>
+          </div>
+          <div class="quick-card" data-goto="cron">
+            <span class="card-icon">⏰</span>
+            <div class="card-label">Cron Generator</div>
+            <div class="card-desc">Build cron expressions</div>
+          </div>
+          <div class="quick-card" data-goto="regex">
+            <span class="card-icon">🔍</span>
+            <div class="card-label">Regex Tester</div>
+            <div class="card-desc">Test patterns live</div>
+          </div>
+          <div class="quick-card" data-goto="snippets">
+            <span class="card-icon">📝</span>
+            <div class="card-label">Script Snippets</div>
+            <div class="card-desc">Save your scripts</div>
+          </div>
+          <div class="quick-card" data-goto="http-codes">
+            <span class="card-icon">🌐</span>
+            <div class="card-label">HTTP Codes</div>
+            <div class="card-desc">Status code reference</div>
+          </div>
+          <div class="quick-card" data-goto="prompts">
+            <span class="card-icon">🤖</span>
+            <div class="card-label">Prompt Library</div>
+            <div class="card-desc">LLM prompt templates</div>
+          </div>
+          <div class="quick-card" data-goto="workflows">
+            <span class="card-icon">🧠</span>
+            <div class="card-label">Agent Workflows</div>
+            <div class="card-desc">Design AI pipelines</div>
+          </div>
+          <div class="quick-card" data-goto="playground">
+            <span class="card-icon">⚡</span>
+            <div class="card-label">LLM Playground</div>
+            <div class="card-desc">Test with LLM APIs</div>
+          </div>
+          <div class="quick-card" data-goto="concepts">
+            <span class="card-icon">📖</span>
+            <div class="card-label">Coding Concepts</div>
+            <div class="card-desc">DSA, OOP, Patterns</div>
+          </div>
+          <div class="quick-card" data-goto="architecture">
+            <span class="card-icon">🏗️</span>
+            <div class="card-label">System Design</div>
+            <div class="card-desc">Architecture patterns</div>
+          </div>
+          <div class="quick-card" data-goto="uuid-pass">
+            <span class="card-icon">🔑</span>
+            <div class="card-label">UUID / Password</div>
+            <div class="card-desc">Generate securely</div>
+          </div>
+          <div class="quick-card" data-goto="timestamp">
+            <span class="card-icon">⏱️</span>
+            <div class="card-label">Timestamp</div>
+            <div class="card-desc">Convert timestamps</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 2. COMMAND LIBRARY ===== -->
+      <section class="page-section" id="page-commands">
+        <div class="page-header">
+          <h1>Command Library</h1>
+          <p>Quick reference for common DevOps commands — search, filter, and copy</p>
+        </div>
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="cmdSearch" placeholder="Search commands...">
+        </div>
+        <div class="filter-chips" id="cmdFilters">
+          <span class="chip active" data-filter="all">All</span>
+          <span class="chip" data-filter="docker">Docker</span>
+          <span class="chip" data-filter="kubernetes">Kubernetes</span>
+          <span class="chip" data-filter="git">Git</span>
+          <span class="chip" data-filter="linux">Linux</span>
+          <span class="chip" data-filter="nginx">Nginx</span>
+        </div>
+        <div class="command-list" id="commandList"></div>
+      </section>
+
+      <!-- ===== 3. JSON / YAML ===== -->
+      <section class="page-section" id="page-json-yaml">
+        <div class="page-header">
+          <h1>JSON / YAML Formatter</h1>
+          <p>Format, validate, and convert between JSON and YAML</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" id="jsonFormat">Format JSON</button>
+          <button class="btn btn-secondary" id="jsonMinify">Minify JSON</button>
+          <button class="btn btn-secondary" id="jsonValidate">Validate</button>
+          <button class="btn btn-secondary" id="jsonToYaml">JSON → YAML</button>
+          <button class="btn btn-secondary" id="yamlToJson">YAML → JSON</button>
+          <button class="btn btn-copy" id="jsonCopyOutput">Copy Output</button>
+        </div>
+        <div class="tool-panel">
+          <div>
+            <label class="input-label">Input</label>
+            <textarea class="tool-textarea" id="jsonInput" placeholder='Paste JSON or YAML here...'></textarea>
+          </div>
+          <div>
+            <label class="input-label">Output</label>
+            <textarea class="tool-textarea output" id="jsonOutput" readonly placeholder="Result will appear here..."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 4. BASE64 / JWT ===== -->
+      <section class="page-section" id="page-base64-jwt">
+        <div class="page-header">
+          <h1>Base64 / JWT Decoder</h1>
+          <p>Encode and decode Base64 strings, and decode JWT tokens</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" id="b64Encode">Base64 Encode</button>
+          <button class="btn btn-secondary" id="b64Decode">Base64 Decode</button>
+          <button class="btn btn-secondary" id="jwtDecode">Decode JWT</button>
+          <button class="btn btn-copy" id="b64CopyOutput">Copy Output</button>
+        </div>
+        <div class="tool-panel">
+          <div>
+            <label class="input-label">Input</label>
+            <textarea class="tool-textarea" id="b64Input" placeholder="Paste text, Base64, or JWT token..."></textarea>
+          </div>
+          <div>
+            <label class="input-label">Output</label>
+            <textarea class="tool-textarea output" id="b64Output" readonly placeholder="Result will appear here..."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 5. CRON GENERATOR ===== -->
+      <section class="page-section" id="page-cron">
+        <div class="page-header">
+          <h1>Cron Expression Generator</h1>
+          <p>Build cron expressions visually with human-readable preview</p>
+        </div>
+        <div class="cron-grid">
+          <div class="cron-field">
+            <label>Minute</label>
+            <input type="text" id="cronMin" value="*" maxlength="10">
+          </div>
+          <div class="cron-field">
+            <label>Hour</label>
+            <input type="text" id="cronHour" value="*" maxlength="10">
+          </div>
+          <div class="cron-field">
+            <label>Day (Month)</label>
+            <input type="text" id="cronDom" value="*" maxlength="10">
+          </div>
+          <div class="cron-field">
+            <label>Month</label>
+            <input type="text" id="cronMonth" value="*" maxlength="10">
+          </div>
+          <div class="cron-field">
+            <label>Day (Week)</label>
+            <input type="text" id="cronDow" value="*" maxlength="10">
+          </div>
+        </div>
+        <div class="cron-result">
+          <div class="cron-expression" id="cronExpr">* * * * *</div>
+          <div class="cron-human" id="cronHuman">Every minute</div>
+        </div>
+        <div style="margin-top:16px;">
+          <div class="page-header" style="margin-bottom:12px;"><h2 style="font-size:1rem;color:var(--text-primary);">Quick Presets</h2></div>
+          <div class="btn-group" id="cronPresets">
+            <button class="btn btn-secondary" data-cron="0 * * * *">Every hour</button>
+            <button class="btn btn-secondary" data-cron="0 0 * * *">Daily midnight</button>
+            <button class="btn btn-secondary" data-cron="0 0 * * 0">Weekly Sunday</button>
+            <button class="btn btn-secondary" data-cron="0 0 1 * *">Monthly 1st</button>
+            <button class="btn btn-secondary" data-cron="*/5 * * * *">Every 5 min</button>
+            <button class="btn btn-secondary" data-cron="0 9-17 * * 1-5">Weekdays 9-5 hourly</button>
+            <button class="btn btn-secondary" data-cron="0 0 * * 1-5">Weekdays midnight</button>
+          </div>
+        </div>
+        <div style="margin-top:10px;">
+          <button class="btn btn-copy" id="cronCopy">Copy Expression</button>
+        </div>
+      </section>
+
+      <!-- ===== 6. REGEX TESTER ===== -->
+      <section class="page-section" id="page-regex">
+        <div class="page-header">
+          <h1>Regex Tester</h1>
+          <p>Write regular expressions and test them against sample text with live match highlighting</p>
+        </div>
+        <div class="input-row">
+          <input type="text" class="input-field mono" id="regexPattern" placeholder="Enter regex pattern..." style="flex:1;">
+          <input type="text" class="input-field" id="regexFlags" placeholder="Flags" value="gi" style="width:80px;">
+        </div>
+        <div class="tool-panel">
+          <div>
+            <label class="input-label">Test String</label>
+            <textarea class="tool-textarea" id="regexInput" placeholder="Enter text to test against..."></textarea>
+          </div>
+          <div>
+            <label class="input-label">Matches</label>
+            <div class="match-count" id="matchCount">0 matches</div>
+            <div class="regex-matches" id="regexOutput"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 7. SCRIPT SNIPPETS ===== -->
+      <section class="page-section" id="page-snippets">
+        <div class="page-header">
+          <h1>Script Snippets</h1>
+          <p>Save, organize, and quickly copy your most-used scripts and commands</p>
+        </div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header"><span class="card-title">Add New Snippet</span></div>
+          <div class="input-row">
+            <input type="text" class="input-field" id="snippetTitle" placeholder="Snippet title..." style="flex:1;">
+            <input type="text" class="input-field" id="snippetTags" placeholder="Tags (comma-separated)" style="flex:1;">
+          </div>
+          <textarea class="tool-textarea" id="snippetCode" placeholder="Paste your script or code here..." style="min-height:120px;margin-bottom:12px;"></textarea>
+          <button class="btn btn-primary" id="snippetSave">💾 Save Snippet</button>
+        </div>
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="snippetSearch" placeholder="Search snippets...">
+        </div>
+        <div class="snippet-grid" id="snippetGrid"></div>
+      </section>
+
+      <!-- ===== 8. HTTP STATUS CODES ===== -->
+      <section class="page-section" id="page-http-codes">
+        <div class="page-header">
+          <h1>HTTP Status Codes</h1>
+          <p>Searchable reference of all HTTP response status codes</p>
+        </div>
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="httpSearch" placeholder="Search by code or name...">
+        </div>
+        <div class="filter-chips" id="httpFilters">
+          <span class="chip active" data-filter="all">All</span>
+          <span class="chip" data-filter="1xx">1xx Info</span>
+          <span class="chip" data-filter="2xx">2xx Success</span>
+          <span class="chip" data-filter="3xx">3xx Redirect</span>
+          <span class="chip" data-filter="4xx">4xx Client</span>
+          <span class="chip" data-filter="5xx">5xx Server</span>
+        </div>
+        <div class="http-grid" id="httpGrid"></div>
+      </section>
+
+      <!-- ===== 9. LLM PROMPT LIBRARY ===== -->
+      <section class="page-section" id="page-prompts">
+        <div class="page-header">
+          <h1>LLM Prompt Library</h1>
+          <p>Curated prompt templates for DevOps, coding, and ops tasks — click to copy</p>
+        </div>
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="promptSearch" placeholder="Search prompts...">
+        </div>
+        <div class="filter-chips" id="promptFilters">
+          <span class="chip active" data-filter="all">All</span>
+          <span class="chip" data-filter="docker">Docker</span>
+          <span class="chip" data-filter="kubernetes">Kubernetes</span>
+          <span class="chip" data-filter="terraform">Terraform</span>
+          <span class="chip" data-filter="debugging">Debugging</span>
+          <span class="chip" data-filter="code-review">Code Review</span>
+          <span class="chip" data-filter="incident">Incident</span>
+          <span class="chip" data-filter="security">Security</span>
+        </div>
+        <div class="prompt-grid" id="promptGrid"></div>
+      </section>
+
+      <!-- ===== 10. AI AGENT WORKFLOWS ===== -->
+      <section class="page-section" id="page-workflows">
+        <div class="page-header">
+          <h1>AI Agent Workflow Designer</h1>
+          <p>Visually design AI agent pipelines — add nodes, connect them, and export as JSON</p>
+        </div>
+        <div class="workflow-canvas-container">
+          <div class="workflow-toolbar">
+            <button class="btn btn-primary" data-wf-add="trigger">➕ Trigger</button>
+            <button class="btn btn-secondary" data-wf-add="llm">🧠 LLM Call</button>
+            <button class="btn btn-secondary" data-wf-add="tool">🔧 Tool Action</button>
+            <button class="btn btn-secondary" data-wf-add="condition">❓ Condition</button>
+            <button class="btn btn-secondary" data-wf-add="output">📤 Output</button>
+            <button class="btn btn-ghost" id="wfClear">🗑️ Clear</button>
+            <button class="btn btn-copy" id="wfExport">📋 Export JSON</button>
+          </div>
+          <div class="workflow-canvas" id="workflowCanvas">
+            <svg id="workflowSvg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 11. LLM PLAYGROUND ===== -->
+      <section class="page-section" id="page-playground">
+        <div class="page-header">
+          <h1>LLM API Playground</h1>
+          <p>Test prompts against OpenAI, Gemini, or Ollama — bring your own API key</p>
+        </div>
+        <div class="playground-panel">
+          <div class="playground-settings">
+            <div>
+              <label class="input-label">Provider</label>
+              <select class="input-field" id="llmProvider" style="width:100%;">
+                <option value="openai">OpenAI</option>
+                <option value="gemini">Google Gemini</option>
+                <option value="ollama">Ollama (Local)</option>
+              </select>
+            </div>
+            <div>
+              <label class="input-label">Model</label>
+              <input type="text" class="input-field" id="llmModel" value="gpt-4" style="width:100%;">
+            </div>
+            <div>
+              <label class="input-label">API Key</label>
+              <input type="password" class="input-field" id="llmApiKey" placeholder="sk-..." style="width:100%;">
+            </div>
+            <div>
+              <label class="input-label">API Base URL <small style="color:var(--text-muted);">(optional)</small></label>
+              <input type="text" class="input-field" id="llmBaseUrl" placeholder="https://api.openai.com/v1" style="width:100%;">
+            </div>
+            <div>
+              <label class="input-label">Temperature: <span id="tempVal">0.7</span></label>
+              <input type="range" min="0" max="2" step="0.1" value="0.7" id="llmTemp" style="width:100%;accent-color:var(--accent-cyan);">
+            </div>
+            <div>
+              <label class="input-label">System Prompt</label>
+              <textarea class="tool-textarea" id="llmSystem" style="min-height:80px;" placeholder="You are a helpful DevOps assistant..."></textarea>
+            </div>
+            <button class="btn btn-primary" id="llmSaveSettings" style="margin-top:auto;">💾 Save Settings</button>
+          </div>
+          <div class="playground-chat">
+            <div class="chat-messages" id="chatMessages">
+              <div class="chat-msg assistant">👋 Configure your API settings on the left, then start chatting!</div>
+            </div>
+            <div class="chat-input-row">
+              <input type="text" id="chatInput" placeholder="Type your prompt...">
+              <button class="btn btn-primary" id="chatSend">Send ▶</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 12. CODING CONCEPTS ===== -->
+      <section class="page-section" id="page-concepts">
+        <div class="page-header">
+          <h1>Coding Concepts</h1>
+          <p>Essential programming concepts for software engineers — with code examples</p>
+        </div>
+        <div id="conceptsList" class="concepts-grid"></div>
+        <div id="conceptDetail" class="concept-detail"></div>
+      </section>
+
+      <!-- ===== 13. SYSTEM DESIGN & ARCHITECTURE ===== -->
+      <section class="page-section" id="page-architecture">
+        <div class="page-header">
+          <h1>System Design & Architecture</h1>
+          <p>Visual architecture patterns and system design concepts for scalable systems</p>
+        </div>
+        <div id="archList" class="arch-grid"></div>
+        <div id="archDetail" class="concept-detail"></div>
+      </section>
+
+      <!-- ===== 14. UUID / PASSWORD ===== -->
+      <section class="page-section" id="page-uuid-pass">
+        <div class="page-header">
+          <h1>UUID & Password Generator</h1>
+          <p>Generate UUIDs and secure passwords with customizable options</p>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header"><span class="card-title">🔑 UUID Generator</span></div>
+          <div class="util-output" id="uuidOutput" style="margin-bottom:12px;">
+            <span id="uuidValue">—</span>
+            <button class="btn btn-copy" id="uuidCopy">Copy</button>
+          </div>
+          <button class="btn btn-primary" id="uuidGen">Generate UUID v4</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔒 Password Generator</span></div>
+          <div class="util-output" id="passOutput" style="margin-bottom:16px;">
+            <span id="passValue" style="font-size:1.1rem;letter-spacing:1px;">—</span>
+            <button class="btn btn-copy" id="passCopy">Copy</button>
+          </div>
+          <div class="password-options" style="margin-bottom:14px;">
+            <label>Length: <span id="passLenVal">16</span>
+              <input type="range" id="passLen" min="8" max="64" value="16">
+            </label>
+            <label><input type="checkbox" id="passUpper" checked> Uppercase</label>
+            <label><input type="checkbox" id="passLower" checked> Lowercase</label>
+            <label><input type="checkbox" id="passDigits" checked> Digits</label>
+            <label><input type="checkbox" id="passSymbols" checked> Symbols</label>
+          </div>
+          <button class="btn btn-primary" id="passGen">Generate Password</button>
+        </div>
+      </section>
+
+      <!-- ===== 15. TIMESTAMP CONVERTER ===== -->
+      <section class="page-section" id="page-timestamp">
+        <div class="page-header">
+          <h1>Timestamp Converter</h1>
+          <p>Convert between Unix timestamps, ISO 8601, and human-readable formats</p>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header"><span class="card-title">⏱️ Current Time</span></div>
+          <div class="timestamp-grid">
+            <div class="timestamp-card">
+              <h3>Unix Timestamp (seconds)</h3>
+              <div class="timestamp-value" id="tsNowUnix">—</div>
+            </div>
+            <div class="timestamp-card">
+              <h3>ISO 8601</h3>
+              <div class="timestamp-value" id="tsNowIso">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header"><span class="card-title">Convert Unix → Human</span></div>
+          <div class="input-row">
+            <input type="text" class="input-field mono" id="tsUnixInput" placeholder="Enter Unix timestamp..." style="flex:1;">
+            <button class="btn btn-primary" id="tsFromUnix">Convert</button>
+          </div>
+          <div class="timestamp-value" id="tsUnixResult" style="margin-top:10px;">—</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">Convert Date → Unix</span></div>
+          <div class="input-row">
+            <input type="datetime-local" class="input-field" id="tsDateInput" style="flex:1;">
+            <button class="btn btn-primary" id="tsFromDate">Convert</button>
+          </div>
+          <div class="timestamp-value" id="tsDateResult" style="margin-top:10px;">—</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

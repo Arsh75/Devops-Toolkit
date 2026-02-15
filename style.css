@@ -1586,6 +1586,8 @@ label.input-label {
     width: 280px;
     min-width: 280px;
     transition: left var(--transition-medium);
+    background: #080e20;
+    backdrop-filter: none;
   }
 
   .sidebar.open {
@@ -2237,8 +2239,7 @@ label.input-label {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 199;
   transition: opacity var(--transition-medium);
 }

@@ -34,77 +34,103 @@
         </div>
       </div>
 
-      <nav class="sidebar-nav">
-        <!-- Core -->
+      <nav class="sidebar-nav" role="navigation" aria-label="Main Navigation">
         <div class="nav-category">
           <div class="nav-category-label">Overview</div>
-          <div class="nav-item active" data-page="dashboard">
-            <span class="nav-icon">🏠</span><span>Dashboard</span>
+          <div class="nav-item active" data-page="dashboard" role="button" aria-label="Dashboard">
+            <span class="nav-icon">📊</span><span>Dashboard</span>
           </div>
         </div>
 
-        <!-- DevOps Utilities -->
         <div class="nav-category">
           <div class="nav-category-label">DevOps Utilities</div>
-          <div class="nav-item" data-page="commands">
-            <span class="nav-icon">💻</span><span>Command Library</span>
+          <div class="nav-item" data-page="commands" role="button" aria-label="Command Library">
+            <span class="nav-icon">🐚</span><span>Command Library</span>
           </div>
-          <div class="nav-item" data-page="json-yaml">
+          <div class="nav-item" data-page="json-yaml" role="button" aria-label="JSON & YAML Tool">
             <span class="nav-icon">📄</span><span>JSON / YAML</span>
           </div>
-          <div class="nav-item" data-page="base64-jwt">
-            <span class="nav-icon">🔐</span><span>Base64 / JWT</span>
+          <div class="nav-item" data-page="base64-jwt" role="button" aria-label="Base64 & JWT Tool">
+            <span class="nav-icon">🔑</span><span>Base64 / JWT</span>
           </div>
-          <div class="nav-item" data-page="cron">
+          <div class="nav-item" data-page="cron" role="button" aria-label="Cron Expression Parser">
             <span class="nav-icon">⏰</span><span>Cron Generator</span>
           </div>
-          <div class="nav-item" data-page="regex">
+          <div class="nav-item" data-page="regex" role="button" aria-label="Regex Tester">
             <span class="nav-icon">🔍</span><span>Regex Tester</span>
           </div>
-          <div class="nav-item" data-page="snippets">
+          <div class="nav-item" data-page="snippets" role="button" aria-label="Script Snippets">
             <span class="nav-icon">📝</span><span>Script Snippets</span>
           </div>
-          <div class="nav-item" data-page="http-codes">
+          <div class="nav-item" data-page="http-codes" role="button" aria-label="HTTP Status Codes">
             <span class="nav-icon">🌐</span><span>HTTP Status Codes</span>
+          </div>
+          <div class="nav-item" data-page="diff" role="button" aria-label="Diff Viewer">
+            <span class="nav-icon">⚖️</span><span>Diff Viewer</span>
+          </div>
+          <div class="nav-item" data-page="colors" role="button" aria-label="Color Picker">
+            <span class="nav-icon">🎨</span><span>Color Picker</span>
+          </div>
+          <div class="nav-item" data-page="markdown" role="button" aria-label="Markdown Preview">
+            <span class="nav-icon">📝</span><span>Markdown Preview</span>
           </div>
         </div>
 
-        <!-- AI / LLM -->
         <div class="nav-category">
           <div class="nav-category-label">AI / LLM Tools</div>
-          <div class="nav-item" data-page="prompts">
+          <div class="nav-item" data-page="prompts" role="button" aria-label="Prompt Library">
             <span class="nav-icon">🤖</span><span>Prompt Library</span>
           </div>
-          <div class="nav-item" data-page="workflows">
+          <div class="nav-item" data-page="workflows" role="button" aria-label="Agent Workflows">
             <span class="nav-icon">🧠</span><span>Agent Workflows</span>
           </div>
-          <div class="nav-item" data-page="playground">
+          <div class="nav-item" data-page="playground" role="button" aria-label="LLM Playground">
             <span class="nav-icon">⚡</span><span>LLM Playground</span>
           </div>
         </div>
 
-        <!-- Learning -->
         <div class="nav-category">
           <div class="nav-category-label">Learning & Reference</div>
-          <div class="nav-item" data-page="concepts">
+          <div class="nav-item" data-page="knowledge" role="button" aria-label="Dev Knowledge Base">
+            <span class="nav-icon">🧠</span><span>Dev Knowledge Base</span>
+          </div>
+          <div class="nav-item" data-page="concepts" role="button" aria-label="Coding Concepts">
             <span class="nav-icon">📖</span><span>Coding Concepts</span>
           </div>
-          <div class="nav-item" data-page="architecture">
+          <div class="nav-item" data-page="architecture" role="button" aria-label="System Design">
             <span class="nav-icon">🏗️</span><span>System Design</span>
           </div>
         </div>
 
-        <!-- Utilities -->
         <div class="nav-category">
           <div class="nav-category-label">Quick Utilities</div>
-          <div class="nav-item" data-page="uuid-pass">
+          <div class="nav-item" data-page="uuid-pass" role="button" aria-label="UUID / Password Generator">
             <span class="nav-icon">🔑</span><span>UUID / Password</span>
           </div>
-          <div class="nav-item" data-page="timestamp">
+          <div class="nav-item" data-page="timestamp" role="button" aria-label="Timestamp Converter">
             <span class="nav-icon">⏱️</span><span>Timestamp</span>
           </div>
         </div>
+
+        <div class="nav-category">
+          <div class="nav-category-label">System</div>
+          <div class="nav-item" data-page="settings" role="button" aria-label="Privacy & Settings">
+            <span class="nav-icon">🛡️</span><span>Privacy & Settings</span>
+          </div>
+        </div>
       </nav>
+      <div class="sidebar-footer" style="flex-direction: column; gap: 8px; padding: 12px;">
+        <div style="display: flex; gap: 8px; width: 100%;">
+          <button id="sidebarCollapse" class="btn btn-ghost" title="Toggle Sidebar" aria-label="Toggle Sidebar"
+            style="flex:1;">
+            <span class="nav-icon">↔️</span>
+          </button>
+          <button id="themeToggle" class="btn btn-ghost" title="Toggle Theme (Alt+T)"
+            aria-label="Toggle Light/Dark Mode" style="flex:1;">
+            <span id="themeIcon">🌙</span>
+          </button>
+        </div>
+      </div>
     </aside>
 
     <!-- ===== MAIN CONTENT ===== -->
@@ -116,6 +142,24 @@
           <div class="clock-greeting" id="clockGreeting">Good Evening</div>
           <div class="clock-time" id="clockTime">00:00:00</div>
           <div class="clock-date" id="clockDate">Sunday, February 15, 2026</div>
+        </div>
+
+        <div class="stats-cards-row">
+          <div class="stats-card">
+            <div class="stats-label">App Storage</div>
+            <div class="stats-value" id="statStorage">0 KB</div>
+            <div class="stats-trend">Local browser storage</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-label">Saved Snippets</div>
+            <div class="stats-value" id="statSnippets">0</div>
+            <div class="stats-trend">Script library size</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-label">Active Session</div>
+            <div class="stats-value" id="statSession">0:00</div>
+            <div class="stats-trend">Minutes active</div>
+          </div>
         </div>
 
         <div class="page-header">
@@ -228,8 +272,12 @@
           <button class="btn btn-primary" id="jsonFormat">Format JSON</button>
           <button class="btn btn-secondary" id="jsonMinify">Minify JSON</button>
           <button class="btn btn-secondary" id="jsonValidate">Validate</button>
-          <button class="btn btn-secondary" id="jsonToYaml">JSON → YAML</button>
-          <button class="btn btn-secondary" id="yamlToJson">YAML → JSON</button>
+          <button class="btn btn-secondary" id="jsonSort">Sort Keys</button>
+          <button class="btn btn-accent" id="jsonToYaml">JSON → YAML</button>
+          <button class="btn btn-accent" id="yamlToJson">YAML → JSON</button>
+          <button class="btn btn-secondary" id="jsonCopyInp">Copy Input</button>
+          <button class="btn btn-danger" id="jsonClear">Clear</button>
+          <button class="btn btn-secondary" id="jsonSwap">↕ Swap</button>
           <button class="btn btn-copy" id="jsonCopyOutput">Copy Output</button>
         </div>
         <div class="tool-panel">
@@ -349,23 +397,44 @@
       <section class="page-section" id="page-snippets">
         <div class="page-header">
           <h1>Script Snippets</h1>
-          <p>Save, organize, and quickly copy your most-used scripts and commands</p>
-        </div>
-        <div class="card" style="margin-bottom:20px;">
-          <div class="card-header"><span class="card-title">Add New Snippet</span></div>
-          <div class="input-row">
-            <input type="text" class="input-field" id="snippetTitle" placeholder="Snippet title..." style="flex:1;">
-            <input type="text" class="input-field" id="snippetTags" placeholder="Tags (comma-separated)"
-              style="flex:1;">
+          <p>Organize and reuse your favorite scripts and commands</p>
+          <div class="header-actions" style="margin-top: 12px; display: flex; gap: 8px;">
+            <button class="btn btn-sm btn-secondary" id="snippetExport">📤 Export</button>
+            <button class="btn btn-sm btn-secondary" id="snippetImport">📥 Import</button>
           </div>
-          <textarea class="tool-textarea" id="snippetCode" placeholder="Paste your script or code here..."
-            style="min-height:120px;margin-bottom:12px;"></textarea>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header"><span class="card-title">Add New Snippet</span></div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+            <div>
+              <label class="input-label">Title</label>
+              <input type="text" class="input-field" id="snippetTitle" placeholder="e.g., Clean Docker Logs"
+                style="width:100%;">
+            </div>
+            <div>
+              <label class="input-label">Tags (comma separated)</label>
+              <input type="text" class="input-field" id="snippetTags" placeholder="docker, linux, cleanup"
+                style="width:100%;">
+            </div>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <label class="input-label">Code / Content</label>
+            <textarea class="tool-textarea" id="snippetCode" style="min-height:120px;"
+              placeholder="Paste your script here..."></textarea>
+          </div>
           <button class="btn btn-primary" id="snippetSave">💾 Save Snippet</button>
         </div>
+
         <div class="search-bar">
           <span class="search-icon">🔍</span>
-          <input type="text" id="snippetSearch" placeholder="Search snippets...">
+          <input type="text" id="snippetSearch" placeholder="Search snippets by title, tag, or code...">
         </div>
+
+        <div id="snippetTagFilters" class="filter-chips" style="margin-top: 12px;">
+          <!-- Dynamic tags -->
+        </div>
+
         <div class="snippet-grid" id="snippetGrid"></div>
       </section>
 
@@ -388,6 +457,74 @@
           <span class="chip" data-filter="5xx">5xx Server</span>
         </div>
         <div class="http-grid" id="httpGrid"></div>
+      </section>
+
+      <!-- ===== NEW TOOLS ===== -->
+      <section class="page-section" id="page-diff">
+        <div class="page-header">
+          <h1>Diff Viewer</h1>
+          <p>Compare two blocks of text or code to see differences</p>
+        </div>
+        <div class="tool-panel" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div>
+            <label class="input-label">Original Text</label>
+            <textarea class="tool-textarea" id="diffOld" placeholder="Paste original content here..."></textarea>
+          </div>
+          <div>
+            <label class="input-label">Modified Text</label>
+            <textarea class="tool-textarea" id="diffNew" placeholder="Paste modified content here..."></textarea>
+          </div>
+        </div>
+        <div class="diff-output-container" id="diffOutputContainer" style="display:none; margin-top: 20px;">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Diff Result</span></div>
+            <div id="diffOutput" class="diff-result"></div>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="diffBtn" style="margin-top:16px;">⚖️ Compare Text</button>
+      </section>
+
+      <section class="page-section" id="page-colors">
+        <div class="page-header">
+          <h1>Color & Variable Picker</h1>
+          <p>Pick colors and convert between formats or find UI variables</p>
+        </div>
+        <div class="tool-panel" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Color Picker</span></div>
+            <input type="color" id="colorPicker"
+              style="width:100%; height:80px; padding:0; border:none; border-radius:8px; cursor:pointer; background:none; margin-bottom:12px;">
+            <div class="input-row">
+              <input type="text" class="input-field" id="colorHex" placeholder="#000000" style="flex:1;">
+              <input type="text" class="input-field" id="colorRgb" placeholder="rgb(0,0,0)" style="flex:1;">
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Palette Suggestion</span></div>
+            <div id="colorPalette" style="display:flex; gap:8px; height:60px; margin-bottom:12px;"></div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Complementary and analogous colors</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-section" id="page-markdown">
+        <div class="page-header">
+          <h1>Markdown Preview</h1>
+          <p>Real-time GFM (GitHub Flavored Markdown) renderer</p>
+        </div>
+        <div class="tool-panel" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div>
+            <label class="input-label">Markdown Input</label>
+            <textarea class="tool-textarea" id="mdInput" style="min-height:400px;"
+              placeholder="# Hello World\n\nStart typing..."></textarea>
+          </div>
+          <div>
+            <label class="input-label">Live Preview</label>
+            <div class="markdown-preview" id="mdPreview"
+              style="min-height:400px; background: rgba(0,0,0,0.1); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 20px; overflow-y: auto;">
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- ===== 9. LLM PROMPT LIBRARY ===== -->
@@ -442,6 +579,13 @@
           <h1>LLM API Playground</h1>
           <p>Test prompts against OpenAI, Gemini, or Ollama — bring your own API key</p>
         </div>
+        <div class="security-notice"
+          style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <span>⚠️ <strong>Security Notice:</strong> Your API key is saved in browser <code>localStorage</code> in plain
+            text. Do not use this tool on shared or public computers.</span>
+          <button id="clearApiKey" class="btn btn-danger btn-sm" style="padding: 4px 8px; font-size: 0.75rem;">Clear Key
+            Now</button>
+        </div>
         <div class="playground-panel">
           <div class="playground-settings">
             <div>
@@ -452,9 +596,10 @@
                 <option value="ollama">Ollama (Local)</option>
               </select>
             </div>
-            <div>
-              <label class="input-label">Model</label>
-              <input type="text" class="input-field" id="llmModel" value="gpt-4" style="width:100%;">
+            <div class="security-notice">
+              <span>⚠️ <strong>Security Notice:</strong> Your API key is saved in browser <code>localStorage</code> in
+                plain text. Do not use this tool on shared or public computers.</span>
+              <button id="clearApiKey" class="btn btn-danger btn-sm">Clear Key Now</button>
             </div>
             <div>
               <label class="input-label">API Key</label>
@@ -478,12 +623,26 @@
             <button class="btn btn-primary" id="llmSaveSettings" style="margin-top:auto;">💾 Save Settings</button>
           </div>
           <div class="playground-chat">
-            <div class="chat-messages" id="chatMessages">
+            <div class="chat-header"
+              style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px;">
+              <span class="card-title" style="margin:0;">Chat History</span>
+              <div class="btn-group" style="gap: 8px;">
+                <button class="btn btn-sm btn-ghost" id="llmCopyChat" style="padding: 4px 8px; font-size: 0.75rem;">📋
+                  Copy conversation</button>
+                <button class="btn btn-sm btn-danger" id="llmClearChat"
+                  style="padding: 4px 8px; font-size: 0.75rem;">🗑️ Clear Chat</button>
+              </div>
+            </div>
+            <div class="chat-messages" id="chatHistory"
+              style="flex: 1; overflow-y: auto; background: rgba(0,0,0,0.1); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; margin-bottom: 12px; min-height: 300px;">
               <div class="chat-msg assistant">👋 Configure your API settings on the left, then start chatting!</div>
             </div>
             <div class="chat-input-row">
-              <input type="text" id="chatInput" placeholder="Type your prompt...">
+              <input type="text" id="chatInput" placeholder="Type your prompt..." style="flex:1;">
               <button class="btn btn-primary" id="chatSend">Send ▶</button>
+            </div>
+            <div id="tokenCount"
+              style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; padding-left: 4px;">~0 tokens (est.)
             </div>
           </div>
         </div>
@@ -507,6 +666,33 @@
         </div>
         <div id="archList" class="arch-grid"></div>
         <div id="archDetail" class="concept-detail"></div>
+      </section>
+
+      <!-- ===== 14. DEVELOPER KNOWLEDGE BASE ===== -->
+      <section class="page-section" id="page-knowledge">
+        <div class="page-header">
+          <h1>Developer Knowledge Base</h1>
+          <p>Universal concepts every developer should deeply understand — with real code examples</p>
+        </div>
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="knowledgeSearch" placeholder="Search concepts...">
+        </div>
+        <div class="filter-chips" id="knowledgeFilters">
+          <span class="chip active" data-filter="all">All</span>
+          <span class="chip" data-filter="language-internals">Language Internals</span>
+          <span class="chip" data-filter="design-patterns">Design Patterns</span>
+          <span class="chip" data-filter="architecture">System Architecture</span>
+          <span class="chip" data-filter="cloud">Cloud Native</span>
+          <span class="chip" data-filter="database">Database</span>
+          <span class="chip" data-filter="security">Security</span>
+          <span class="chip" data-filter="rxjs">RxJS</span>
+          <span class="chip" data-filter="dotnet">ASP.NET Core</span>
+          <span class="chip" data-filter="angular">Angular</span>
+          <span class="chip" data-filter="performance">Performance & Caching</span>
+        </div>
+        <div class="concepts-grid" id="knowledgeGrid"></div>
+        <div class="concept-detail" id="knowledgeDetail"></div>
       </section>
 
       <!-- ===== 14. UUID / PASSWORD ===== -->
@@ -585,7 +771,88 @@
         </div>
       </section>
 
+      <!-- ===== 16. PRIVACY & SETTINGS ===== -->
+      <section class="page-section" id="page-settings">
+        <div class="page-header">
+          <h1>Privacy & Settings</h1>
+          <p>Manage your data, export configurations, or clear all application data</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header"><span class="card-title">📦 Data Storage Breakdown</span></div>
+          <p style="color:var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+            Breakdown of stored data by category. Clearing a category only affects that specific tool.
+          </p>
+          <div id="lsDataList" style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Categories: Snippets, LLM Settings, Workflows, Preferences -->
+            <div class="storage-item"
+              style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--glass-border);">
+              <div>
+                <div style="font-weight: 600; font-size: 0.95rem;">Script Snippets</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);" id="size-snippets">Size: 0 B</div>
+              </div>
+              <button class="btn btn-sm btn-ghost" onclick="clearCategory('snippets')">Clear</button>
+            </div>
+            <div class="storage-item"
+              style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--glass-border);">
+              <div>
+                <div style="font-weight: 600; font-size: 0.95rem;">LLM Settings & History</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);" id="size-llm">Size: 0 B</div>
+              </div>
+              <button class="btn btn-sm btn-ghost" onclick="clearCategory('llm')">Clear</button>
+            </div>
+            <div class="storage-item"
+              style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--glass-border);">
+              <div>
+                <div style="font-weight: 600; font-size: 0.95rem;">Workflow Designer</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);" id="size-workflows">Size: 0 B</div>
+              </div>
+              <button class="btn btn-sm btn-ghost" onclick="clearCategory('workflows')">Clear</button>
+            </div>
+            <div class="storage-item" style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 600; font-size: 0.95rem;">System & UI Preferences</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);" id="size-prefs">Size: 0 B</div>
+              </div>
+              <button class="btn btn-sm btn-ghost" onclick="clearCategory('prefs')">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 24px;">
+          <div class="card-header"><span class="card-title">📥 Import Data</span></div>
+          <p style="color:var(--text-secondary); margin-bottom: 16px; font-size: 0.9rem;">
+            Restore your snippets, workflows, and settings from a JSON backup.
+          </p>
+          <div class="import-drop-zone" id="importDropZone">
+            <div class="drop-zone-content">
+              <span class="drop-zone-icon">📁</span>
+              <span class="drop-zone-text">Drag & drop backup file or <strong>click to browse</strong></span>
+              <span class="drop-zone-meta">Supports .json files only</span>
+            </div>
+            <input type="file" id="importFileInput" accept=".json" style="display: none;">
+          </div>
+        </div>
+
+        <div class="card" style="border-color: rgba(239, 68, 68, 0.3);">
+          <div class="card-header"><span class="card-title" style="color: var(--accent-red);">☢️ Danger Zone</span>
+          </div>
+          <p style="color:var(--text-secondary); margin-bottom: 16px; font-size: 0.9rem;">
+            These actions are permanent and cannot be undone.
+          </p>
+          <div class="btn-group">
+            <button class="btn btn-primary" id="exportAllData">📥 Export All Data (JSON)</button>
+            <button class="btn btn-danger" id="nukeAllData">🗑️ Clear ALL App Data</button>
+          </div>
+        </div>
+      </section>
+
     </main>
+  </div>
+
+  <div id="toast-container"></div>
+  <div id="modal-overlay">
+    <div class="modal-box" id="modalBox"></div>
   </div>
 
   <script src="app.js"></script>

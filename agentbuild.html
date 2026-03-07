@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Coding Agent — Build Guide</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #08090f;
+            --surface: #0d0e18;
+            --card: #111222;
+            --border: #1c1e30;
+            --border2: #252840;
+            --text: #d0d8f0;
+            --sub: #7880a0;
+            --dim: #383c58;
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Plus Jakarta Sans', sans-serif;
+            --sidebar-w: 268px;
+            --topbar-h: 56px;
+            --c: #60a5fa;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100dvh;
+        }
+
+        /* Shell */
+        #shell {
+            display: flex;
+            height: 100dvh;
+            position: relative;
+        }
+
+        /* Mobile topbar */
+        #topbar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--topbar-h);
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            z-index: 200;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+
+        #menu-btn {
+            width: 38px;
+            height: 38px;
+            background: var(--card);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+            transition: background 0.15s;
+        }
+
+        #menu-btn:hover {
+            background: var(--border2);
+        }
+
+        #topbar-title {
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        #topbar-step {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 5px;
+            border: 1px solid;
+            flex-shrink: 0;
+        }
+
+        /* Overlay */
+        #overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 299;
+            backdrop-filter: blur(2px);
+        }
+
+        #overlay.open {
+            display: block;
+        }
+
+        /* Sidebar */
+        #sidebar {
+            width: var(--sidebar-w);
+            min-width: var(--sidebar-w);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
+            transition: transform 0.28s cubic-bezier(.4, 0, .2, 1);
+            z-index: 300;
+        }
+
+        .sidebar-head {
+            padding: 22px 18px 16px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .sidebar-eyebrow {
+            font-family: var(--mono);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 5px;
+        }
+
+        .sidebar-name {
+            font-family: var(--sans);
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+
+        #sidebar-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0 24px;
+        }
+
+        #sidebar-scroll::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        #sidebar-scroll::-webkit-scrollbar-thumb {
+            background: var(--border2);
+            border-radius: 2px;
+        }
+
+        .phase-group {
+            margin-bottom: 4px;
+        }
+
+        .phase-lbl {
+            font-family: var(--mono);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            padding: 10px 18px 4px;
+            display: block;
+        }
+
+        .step-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-left: 2px solid transparent;
+            padding: 8px 16px 8px 18px;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.12s, border-color 0.12s;
+        }
+
+        .step-btn:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .step-btn.active {
+            background: color-mix(in srgb, var(--c) 10%, transparent);
+            border-left-color: var(--c);
+        }
+
+        .s-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            transition: background 0.12s, border-color 0.12s;
+        }
+
+        .step-btn.active .s-icon {
+            background: color-mix(in srgb, var(--c) 18%, transparent);
+            border-color: color-mix(in srgb, var(--c) 35%, transparent);
+        }
+
+        .s-text {
+            min-width: 0;
+        }
+
+        .s-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--sub);
+            line-height: 1.35;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.12s;
+        }
+
+        .step-btn.active .s-title {
+            color: var(--c);
+            font-weight: 700;
+        }
+
+        .s-day {
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--dim);
+            margin-top: 1px;
+        }
+
+        /* Main */
+        #main {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #main::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #main::-webkit-scrollbar-thumb {
+            background: var(--border2);
+            border-radius: 3px;
+        }
+
+        #progress-strip {
+            height: 2px;
+            background: var(--border);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        #progress-fill {
+            height: 100%;
+            border-radius: 1px;
+            transition: width 0.4s ease, background 0.3s;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        #content {
+            flex: 1;
+            padding: 32px 40px 56px;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Step header */
+        .meta-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            font-family: var(--mono);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 5px;
+            border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
+            background: color-mix(in srgb, var(--c) 10%, transparent);
+            color: var(--c);
+        }
+
+        .day-tag {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--sub);
+        }
+
+        .page-title {
+            font-family: var(--sans);
+            font-size: clamp(17px, 2.4vw, 25px);
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.4px;
+            line-height: 1.25;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-sum {
+            font-size: clamp(12.5px, 1.4vw, 14px);
+            color: var(--sub);
+            line-height: 1.7;
+            margin-bottom: 26px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Concepts */
+        .eyebrow {
+            font-family: var(--mono);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 12px;
+        }
+
+        .concept-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px 18px;
+            margin-bottom: 10px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .concept-card:hover {
+            border-color: var(--border2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .concept-h {
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--c);
+            margin-bottom: 7px;
+        }
+
+        .concept-b {
+            font-size: clamp(12px, 1.35vw, 13px);
+            color: #8898c0;
+            line-height: 1.75;
+            white-space: pre-line;
+        }
+
+        /* Code block */
+        .code-section {
+            margin-top: 26px;
+        }
+
+        .code-hdr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .toggle-btn {
+            font-family: var(--mono);
+            font-size: 10px;
+            background: var(--card);
+            border: 1px solid var(--border2);
+            border-radius: 5px;
+            padding: 4px 12px;
+            color: var(--sub);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .toggle-btn:hover {
+            background: var(--border2);
+            color: var(--text);
+        }
+
+        .code-box {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border2);
+        }
+
+        .code-topbar {
+            background: #09090e;
+            padding: 9px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mac-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .mac-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .code-lbl {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--sub);
+        }
+
+        .copy-btn {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 700;
+            background: var(--border2);
+            border: none;
+            border-radius: 5px;
+            padding: 4px 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+
+        .copy-btn:hover {
+            background: #303555;
+        }
+
+        .copy-btn.ok {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+        }
+
+        .code-scroll {
+            background: #07080e;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .code-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .code-scroll::-webkit-scrollbar-thumb {
+            background: var(--border2);
+            border-radius: 3px;
+        }
+
+        table.ct {
+            border-collapse: collapse;
+            min-width: 100%;
+        }
+
+        .ln {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--dim);
+            text-align: right;
+            padding: 0 12px;
+            user-select: none;
+            min-width: 38px;
+            vertical-align: top;
+            line-height: 1.7;
+            border-right: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .lc {
+            font-family: var(--mono);
+            font-size: clamp(11px, 1.25vw, 12.5px);
+            padding: 0 20px 0 14px;
+            white-space: pre;
+            line-height: 1.7;
+            color: #bcc8e8;
+        }
+
+        .sc {
+            color: #42485e;
+        }
+
+        .ss {
+            color: #82c99a;
+        }
+
+        .sk {
+            color: #c196f0;
+        }
+
+        .sl {
+            color: #78d0e0;
+        }
+
+        .sn {
+            color: #f4956a;
+        }
+
+        /* Nav */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 36px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            gap: 10px;
+        }
+
+        .nav-btn {
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.18s;
+            border: 1px solid var(--border2);
+            background: var(--card);
+            color: var(--sub);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--border2);
+            color: var(--text);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.22;
+            cursor: default;
+        }
+
+        .nav-btn.fwd {
+            background: color-mix(in srgb, var(--c) 12%, transparent);
+            border-color: color-mix(in srgb, var(--c) 38%, transparent);
+            color: var(--c);
+        }
+
+        .nav-btn.fwd:hover:not(:disabled) {
+            background: color-mix(in srgb, var(--c) 22%, transparent);
+        }
+
+        .pip-row {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .pip {
+            width: 6px;
+            height: 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            background: var(--dim);
+            transition: all 0.2s;
+        }
+
+        .pip.on {
+            width: 20px;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            #topbar {
+                display: flex;
+            }
+
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100dvh;
+                transform: translateX(-100%);
+                box-shadow: 4px 0 32px rgba(0, 0, 0, 0.5);
+            }
+
+            #sidebar.open {
+                transform: translateX(0);
+            }
+
+            #main {
+                padding-top: var(--topbar-h);
+            }
+
+            #content {
+                padding: 20px 18px 48px;
+            }
+
+            .page-title {
+                font-size: 18px;
+            }
+
+            .nav-btn {
+                padding: 9px 14px;
+                font-size: 12px;
+            }
+
+            .concept-card {
+                padding: 13px 15px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            #content {
+                padding: 16px 14px 44px;
+            }
+
+            .page-title {
+                font-size: 16px;
+            }
+
+            .concept-b {
+                font-size: 12px;
+            }
+
+            .nav-btn {
+                padding: 9px 12px;
+                font-size: 11px;
+            }
+
+            .pip-row {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="topbar">
+        <button id="menu-btn" onclick="toggleSidebar()" aria-label="Open menu">☰</button>
+        <div id="topbar-title">Loading…</div>
+        <div id="topbar-step" class="badge"></div>
+    </div>
+
+    <div id="overlay" onclick="closeSidebar()"></div>
+
+    <div id="shell">
+        <nav id="sidebar">
+            <div class="sidebar-head">
+                <div class="sidebar-eyebrow">Build Guide</div>
+                <div class="sidebar-name">🤖 Coding Agent</div>
+            </div>
+            <div id="sidebar-scroll"></div>
+        </nav>
+
+        <main id="main">
+            <div id="progress-strip">
+                <div id="progress-fill"></div>
+            </div>
+            <div id="content"></div>
+        </main>
+    </div>
+
+    <script>
+        const PC = {
+            "Foundation": "#60a5fa",
+            "Core Build": "#a78bfa",
+            "Hardening": "#f59e0b",
+            "Advanced": "#34d399",
+            "Ship It": "#f472b6",
+        };
+
+        const STEPS = [
+            {
+                id: 1, phase: "Foundation", title: "Understand the Architecture", duration: "Day 1", icon: "🏗️",
+                summary: "Know exactly what you're building before writing a single line of code. A solid mental model of the agent loop will save you hours of debugging later.",
+                concepts: [
+                    {
+                        h: "What a Coding Agent Actually Is",
+                        b: "A coding agent is an LLM running in a loop that can:\n• Read a task description\n• Write code to solve it\n• Execute that code in a sandbox\n• Observe the output or error\n• Revise and retry — autonomously\n\nCore loop: Think → Write → Run → Observe → Repeat"
+                    },
+                    {
+                        h: "The 5 Core Components",
+                        b: "1. Planner — breaks the task into subtasks\n2. Code Writer — generates Python/JS/shell code\n3. Executor — runs code safely in a Docker sandbox\n4. Observer — reads stdout, stderr, exit codes\n5. Memory — maintains context across the full loop"
+                    },
+                    {
+                        h: "ReAct Pattern (Reason + Act)",
+                        b: "Every step follows: Thought → Action → Observation\n\nThe model reasons about what to do next, calls a tool (action), reads the result (observation), then reasons again. This continues until the task is done or a step limit is reached."
+                    },
+                    {
+                        h: "Why Claude for Coding Agents",
+                        b: "• 200k token context window — essential for long agentic runs\n• Superior instruction-following for structured tool use\n• Lower rate of hallucinated function calls\n• Recommended model: claude-sonnet-4-20250514"
+                    }
+                ],
+                code: null
+            },
+
+            {
+                id: 2, phase: "Foundation", title: "Set Up Project & Environment", duration: "Day 1–2", icon: "⚙️",
+                summary: "Scaffold the project correctly from the start. A clean layout makes every subsequent step easier to implement and far easier to debug when things go wrong.",
+                concepts: [
+                    {
+                        h: "Recommended Project Structure",
+                        b: "coding-agent/\n├── agent/\n│   ├── __init__.py\n│   ├── core.py          # main agent loop\n│   ├── tools.py         # tool definitions\n│   ├── executor.py      # Docker sandbox\n│   └── memory.py        # context management\n├── sandbox/\n│   └── Dockerfile       # isolated execution env\n├── tests/\n├── .env                 # secrets — never commit\n└── main.py"
+                    },
+                    {
+                        h: "Key Dependencies",
+                        b: "anthropic>=0.25.0   # Claude SDK\ndocker>=7.0.0       # sandbox execution\npydantic>=2.0       # tool schema validation\nrich>=13.0          # pretty terminal output\npython-dotenv       # environment variables\nfastapi + uvicorn   # optional: expose as REST API"
+                    }
+                ],
+                code: [
+                    "# Install all dependencies in one shot",
+                    "pip install anthropic docker pydantic rich python-dotenv",
+                    "",
+                    "# .env — NEVER commit this file to git",
+                    "ANTHROPIC_API_KEY=sk-ant-...",
+                    "MAX_AGENT_STEPS=25",
+                    "SANDBOX_TIMEOUT_SECONDS=30",
+                    "",
+                    "# main.py — entry point",
+                    "from dotenv import load_dotenv",
+                    "from agent.core import CodingAgent",
+                    "",
+                    "load_dotenv()",
+                    "",
+                    'if __name__ == "__main__":',
+                    '    task = ("Write a Python function that finds all primes up to N "',
+                    '            "using Sieve of Eratosthenes, benchmark for N=1_000_000.")',
+                    "    agent  = CodingAgent()",
+                    "    result = agent.run(task)",
+                    "    print(result)"
+                ]
+            },
+
+            {
+                id: 3, phase: "Core Build", title: "Define Tools the Agent Can Use", duration: "Day 2–3", icon: "🔧",
+                summary: "Tools are the agent's hands. Precise, unambiguous descriptions are critical — vague descriptions lead directly to wrong tool calls and hard-to-debug failures.",
+                concepts: [
+                    {
+                        h: "The 4 Essential Tools",
+                        b: "1. execute_code — run Python in sandbox, get stdout/stderr back\n2. read_file — read a file from the workspace\n3. write_file — write or overwrite a file\n4. list_files — list current workspace contents\n\nOptional extras: search_web, install_package, run_tests, git_commit"
+                    },
+                    {
+                        h: "Tool Schema Rules",
+                        b: "Every tool needs three parts:\n• name — use snake_case consistently\n• description — be extremely precise. The model reads this to decide WHEN to call it. Vague = broken agent.\n• input_schema — valid JSON Schema with all required fields declared\n\nSpend extra time on descriptions. They have the most impact on reliability."
+                    }
+                ],
+                code: [
+                    "# agent/tools.py",
+                    "TOOLS = [",
+                    "    {",
+                    '        "name": "execute_code",',
+                    '        "description": (',
+                    '            "Execute Python code in an isolated sandbox. "',
+                    '            "Returns stdout, stderr, and exit code. "',
+                    '            "Use to test code, run computations, or verify output. "',
+                    '            "Sandbox is stateless — variables do NOT persist between calls."',
+                    "        ),",
+                    '        "input_schema": {',
+                    '            "type": "object",',
+                    '            "properties": {',
+                    '                "code":    {"type": "string",  "description": "Python code"},',
+                    '                "timeout": {"type": "integer", "default": 30}',
+                    "            },",
+                    '            "required": ["code"]',
+                    "        }",
+                    "    },",
+                    "    {",
+                    '        "name": "write_file",',
+                    '        "description": "Write content to a file in the workspace.",',
+                    '        "input_schema": {',
+                    '            "type": "object",',
+                    '            "properties": {',
+                    '                "path":    {"type": "string"},',
+                    '                "content": {"type": "string"}',
+                    "            },",
+                    '            "required": ["path", "content"]',
+                    "        }",
+                    "    },",
+                    "    {",
+                    '        "name": "read_file",',
+                    '        "description": "Read contents of a file from the workspace.",',
+                    '        "input_schema": {',
+                    '            "type": "object",',
+                    '            "properties": {"path": {"type": "string"}},',
+                    '            "required": ["path"]',
+                    "        }",
+                    "    },",
+                    "    {",
+                    '        "name": "list_files",',
+                    '        "description": "List all files in the current workspace.",',
+                    '        "input_schema": {"type": "object", "properties": {}}',
+                    "    }",
+                    "]"
+                ]
+            },
+
+            {
+                id: 4, phase: "Core Build", title: "Build the Secure Sandbox", duration: "Day 3–4", icon: "🐳",
+                summary: "Never execute agent-generated code on your host machine. One bad execution could delete files, exfiltrate credentials, or crash your system. Docker with hard limits is mandatory.",
+                concepts: [
+                    {
+                        h: "Why a Sandbox is Non-Negotiable",
+                        b: "Agent-generated code can:\n• Delete files on your host system\n• Make unauthorized outbound network requests\n• Fork-bomb (spawn infinite child processes)\n• Import and run malicious packages\n• Exfiltrate API keys or other credentials\n\nNone of this is hypothetical — run ALL generated code in a container."
+                    },
+                    {
+                        h: "Sandbox Security Constraints",
+                        b: "• --network none — zero internet access from inside\n• Read-only host filesystem mount\n• Memory cap: 256MB maximum\n• CPU cap: 1 core maximum\n• Hard kill after N seconds (no exceptions)\n• Fresh container per execution (fully stateless)\n• Writable /tmp only (64MB limit)"
+                    }
+                ],
+                code: [
+                    "# sandbox/Dockerfile",
+                    "FROM python:3.12-slim",
+                    "RUN pip install numpy pandas scipy matplotlib --quiet",
+                    "WORKDIR /sandbox",
+                    'CMD ["python", "-c", "import sys; exec(sys.stdin.read())"]',
+                    "",
+                    "# agent/executor.py",
+                    "import docker",
+                    "from dataclasses import dataclass",
+                    "",
+                    "@dataclass",
+                    "class ExecutionResult:",
+                    "    stdout: str",
+                    "    stderr: str",
+                    "    exit_code: int",
+                    "    timed_out: bool",
+                    "",
+                    "class DockerExecutor:",
+                    "    def __init__(self):",
+                    "        self.client = docker.from_env()",
+                    '        self.image  = "coding-agent-sandbox:latest"',
+                    "",
+                    "    def run(self, code: str, timeout: int = 30) -> ExecutionResult:",
+                    "        try:",
+                    "            c = self.client.containers.run(",
+                    "                self.image, stdin_open=True, detach=True,",
+                    "                network_disabled=True,",
+                    '                mem_limit="256m",',
+                    "                nano_cpus=1_000_000_000,",
+                    "                read_only=True,",
+                    '                tmpfs={"/tmp": "size=64m"},',
+                    "            )",
+                    "            sock = c.attach_socket(params={'stdin':1,'stream':1})",
+                    "            sock._sock.sendall(code.encode())",
+                    "            sock._sock.close()",
+                    "            try:",
+                    "                ec = c.wait(timeout=timeout)['StatusCode']",
+                    "                to = False",
+                    "            except Exception:",
+                    "                c.kill(); ec, to = -1, True",
+                    "            logs = c.logs(stdout=True, stderr=True).decode()",
+                    "            c.remove(force=True)",
+                    "            return ExecutionResult(stdout=logs, stderr='',",
+                    "                exit_code=ec, timed_out=to)",
+                    "        except Exception as e:",
+                    "            return ExecutionResult(stdout='', stderr=str(e),",
+                    "                exit_code=1, timed_out=False)"
+                ]
+            },
+
+            {
+                id: 5, phase: "Core Build", title: "Build the Agent Loop", duration: "Day 4–5", icon: "🔄",
+                summary: "This is the heart of the system — the Think → Act → Observe loop. The system prompt is the single most impactful thing you will write in this entire project.",
+                concepts: [
+                    {
+                        h: "The Loop Logic",
+                        b: "1. Send task + message history to Claude with tools attached\n2. Claude calls a tool → execute it → append result → go to step 1\n3. Claude returns end_turn → task complete, extract final text\n4. Steps exceed MAX_STEPS → force-stop to cap cost and prevent runaway"
+                    },
+                    {
+                        h: "System Prompt is Everything",
+                        b: "The system prompt shapes all agent behavior. Include:\n• The agent's role and what it's trying to accomplish\n• Available tools and when each one should be used\n• Instructions to think step-by-step before acting\n• Rules for error handling (fix root cause, don't give up)\n• Requirement to always verify code runs before declaring success"
+                    }
+                ],
+                code: [
+                    "# agent/core.py",
+                    "import anthropic, os",
+                    "from .tools import TOOLS",
+                    "from .executor import DockerExecutor",
+                    "",
+                    "SYSTEM = '''",
+                    "You are an expert coding agent. Write, execute, and debug code",
+                    "to complete tasks given by the user.",
+                    "",
+                    "Rules:",
+                    "- Always execute code to verify it works before declaring success.",
+                    "- When code fails, read the error carefully and fix the root cause.",
+                    "- Break complex tasks into small, independently testable steps.",
+                    "- After completing a task, summarize what you built and the results.",
+                    "'''",
+                    "",
+                    "class CodingAgent:",
+                    "    def __init__(self):",
+                    "        self.client    = anthropic.Anthropic()",
+                    "        self.executor  = DockerExecutor()",
+                    "        self.max_steps = int(os.getenv('MAX_AGENT_STEPS', 25))",
+                    "",
+                    "    def run(self, task: str) -> str:",
+                    "        messages = [{'role': 'user', 'content': task}]",
+                    "        for step in range(self.max_steps):",
+                    "            resp = self.client.messages.create(",
+                    "                model='claude-sonnet-4-20250514',",
+                    "                max_tokens=4096, system=SYSTEM,",
+                    "                tools=TOOLS, messages=messages",
+                    "            )",
+                    "            messages.append({'role':'assistant','content':resp.content})",
+                    "",
+                    "            if resp.stop_reason == 'end_turn':",
+                    "                return next((b.text for b in resp.content",
+                    "                             if hasattr(b,'text')), '')",
+                    "",
+                    "            if resp.stop_reason == 'tool_use':",
+                    "                results = []",
+                    "                for b in resp.content:",
+                    "                    if b.type != 'tool_use': continue",
+                    "                    out = self._dispatch(b.name, b.input)",
+                    "                    results.append({'type':'tool_result',",
+                    "                        'tool_use_id':b.id,'content':out})",
+                    "                messages.append({'role':'user','content':results})",
+                    "",
+                    "        return 'Max steps reached. Task may be incomplete.'"
+                ]
+            },
+
+            {
+                id: 6, phase: "Hardening", title: "Add Memory & Context Management", duration: "Day 5–6", icon: "🧠",
+                summary: "Long agentic tasks will exhaust the context window fast. Compress intelligently — keep recent messages verbatim while summarizing older history into a running summary.",
+                concepts: [
+                    {
+                        h: "The Context Problem at Scale",
+                        b: "A 25-step agent run generates ~50 messages. Each execute_code result can be thousands of tokens. By step 15 you're often at 100k+ tokens — expensive, slow, and the model starts losing focus on the original goal.\n\nYou need a proactive compression strategy."
+                    },
+                    {
+                        h: "The Compression Strategy",
+                        b: "• Always keep the last 6 messages verbatim (recent context matters most)\n• Compress older messages into a running summary in the system prompt\n• Truncate tool outputs longer than 3000 chars: keep first 2000 + last 1000\n• Use a fast model for summarization — not your main agent model"
+                    }
+                ],
+                code: [
+                    "# agent/memory.py",
+                    "import anthropic",
+                    "",
+                    "client           = anthropic.Anthropic()",
+                    "KEEP_RECENT      = 6      # keep last N messages verbatim",
+                    "MAX_OUTPUT_CHARS = 3000   # truncate anything longer",
+                    "",
+                    "def compress_messages(messages: list, summary: str) -> tuple:",
+                    '    """Returns (compressed_messages, updated_summary)."""',
+                    "    if len(messages) <= KEEP_RECENT + 2:",
+                    "        return messages, summary  # not enough to compress yet",
+                    "",
+                    "    to_compress = messages[:-KEEP_RECENT]",
+                    "    recent      = messages[-KEEP_RECENT:]",
+                    "",
+                    "    prompt = (",
+                    "        'Summarize what the coding agent accomplished so far. '",
+                    "        'Focus on: code written, tests passed/failed, current state. '",
+                    "        'Be concise.\\n\\nPrior summary: ' + summary + '\\n\\n'",
+                    "        'Steps to compress:\\n' + _fmt(to_compress)",
+                    "    )",
+                    "    resp = client.messages.create(",
+                    "        model='claude-sonnet-4-20250514', max_tokens=600,",
+                    "        messages=[{'role':'user','content':prompt}]",
+                    "    )",
+                    "    return recent, resp.content[0].text",
+                    "",
+                    "def truncate_output(text: str) -> str:",
+                    '    """Preserve start and end, cut the middle."""',
+                    "    if len(text) <= MAX_OUTPUT_CHARS: return text",
+                    "    return text[:2000] + '\\n...[truncated]...\\n' + text[-1000:]"
+                ]
+            },
+
+            {
+                id: 7, phase: "Hardening", title: "Error Handling & Retry Logic", duration: "Day 6", icon: "🛡️",
+                summary: "Agents fail constantly — that's expected. Build a system that recovers gracefully. Self-healing feedback embedded in the error response dramatically improves fix rates.",
+                concepts: [
+                    {
+                        h: "5 Types of Failures to Plan For",
+                        b: "1. Code errors — syntax/runtime errors in generated code (agent self-fixes)\n2. Tool errors — file not found, Docker daemon unexpectedly down\n3. API errors — rate limits or network timeouts from Anthropic\n4. Loop errors — agent stuck in a cycle, never converging on a solution\n5. Logic errors — code runs cleanly but produces wrong output"
+                    },
+                    {
+                        h: "The Self-Healing Pattern",
+                        b: "When execute_code returns a non-zero exit code, don't just pass back the raw error output.\n\nPrefix it with a direct instruction:\n'EXECUTION FAILED. Read the error carefully, identify the root cause, and write a corrected version.'\n\nThis specific phrasing significantly improves the agent's self-fix success rate."
+                    }
+                ],
+                code: [
+                    "# Enhanced _dispatch with self-healing feedback",
+                    "def _dispatch(self, name: str, args: dict) -> str:",
+                    "    if name == 'execute_code':",
+                    "        r = self.executor.run(args['code'], args.get('timeout', 30))",
+                    "",
+                    "        if r.timed_out:",
+                    "            return ('TIMEOUT: Code exceeded time limit. '",
+                    "                    'Optimize the algorithm or reduce input size.')",
+                    "",
+                    "        if r.exit_code != 0:",
+                    "            return (",
+                    "                f'EXECUTION FAILED (exit code {r.exit_code})\\n'",
+                    "                f'Error output:\\n{r.stdout[:2000]}\\n\\n'",
+                    "                'Diagnose the root cause and write a corrected version.'",
+                    "            )",
+                    "",
+                    "        return f'SUCCESS:\\n{truncate_output(r.stdout or \"(no output)\")}'",
+                    "",
+                    "",
+                    "# Exponential backoff for Anthropic API calls",
+                    "import time",
+                    "from anthropic import RateLimitError, APIStatusError",
+                    "",
+                    "def call_with_retry(client, **kwargs):",
+                    "    for attempt in range(5):",
+                    "        try:",
+                    "            return client.messages.create(**kwargs)",
+                    "        except RateLimitError:",
+                    "            wait = 2 ** attempt",
+                    "            print(f'Rate limited — retrying in {wait}s...')",
+                    "            time.sleep(wait)",
+                    "        except APIStatusError as e:",
+                    "            if e.status_code >= 500: time.sleep(2**attempt)",
+                    "            else: raise  # 4xx — don't retry client errors",
+                    "    raise RuntimeError('Max retries exceeded.')"
+                ]
+            },
+
+            {
+                id: 8, phase: "Advanced", title: "LangGraph for Complex Workflows", duration: "Day 7–8", icon: "🕸️",
+                summary: "The raw loop handles linear tasks well. When you need conditional branching, parallel sub-agents, or human-in-the-loop approval gates, LangGraph is the right orchestration layer.",
+                concepts: [
+                    {
+                        h: "When to Add LangGraph",
+                        b: "Add it when your workflow requires:\n• Conditional branching — if tests pass → commit, else → debug\n• Parallel execution — write tests and implementation simultaneously\n• Human-in-the-loop — approval gate before any destructive action\n• Checkpointing — save and resume long multi-hour workflows"
+                    },
+                    {
+                        h: "Core LangGraph Concepts",
+                        b: "Graph       — the entire workflow definition\nNodes       — Python functions (call LLM, run tool, validate)\nEdges       — transitions between nodes (can be conditional)\nState       — a typed dict that flows through every node\nCheckpoint  — built-in persistence, save/resume at any node"
+                    }
+                ],
+                code: [
+                    "# pip install langgraph langchain-anthropic",
+                    "",
+                    "from langgraph.graph import StateGraph, END",
+                    "from typing import TypedDict",
+                    "",
+                    "class AgentState(TypedDict):",
+                    "    task: str",
+                    "    messages: list",
+                    "    code: str",
+                    "    test_results: str",
+                    "    attempts: int",
+                    "",
+                    "# Node 1 — Generate initial solution",
+                    "def write_code(state: AgentState) -> AgentState:",
+                    "    response = claude.invoke(state['messages'])",
+                    "    return {**state, 'code': extract_code(response),",
+                    "            'attempts': state['attempts'] + 1}",
+                    "",
+                    "# Node 2 — Run the test suite against it",
+                    "def run_tests(state: AgentState) -> AgentState:",
+                    "    result = executor.run(state['code'] + TEST_SUITE)",
+                    "    return {**state, 'test_results': result.stdout}",
+                    "",
+                    "# Node 3 — Debug if tests failed",
+                    "def debug_code(state: AgentState) -> AgentState:",
+                    "    msgs = state['messages'] + [",
+                    "        {'role': 'assistant', 'content': state['code']},",
+                    "        {'role': 'user', 'content': 'Tests failed:\\n'",
+                    "                        + state['test_results'] + '\\nFix it.'}",
+                    "    ]",
+                    "    return {**state, 'messages': msgs,",
+                    "            'code': extract_code(claude.invoke(msgs))}",
+                    "",
+                    "# Decide what to do after tests run",
+                    "def route(state: AgentState) -> str:",
+                    "    if 'PASSED' in state['test_results']: return 'done'",
+                    "    if state['attempts'] >= 5:            return 'done'",
+                    "    return 'debug'",
+                    "",
+                    "g = StateGraph(AgentState)",
+                    "g.add_node('write', write_code)",
+                    "g.add_node('test',  run_tests)",
+                    "g.add_node('debug', debug_code)",
+                    "g.add_edge('write', 'test')",
+                    "g.add_conditional_edges('test', route, {'done':END,'debug':'debug'})",
+                    "g.add_edge('debug', 'test')",
+                    "g.set_entry_point('write')",
+                    "app = g.compile()"
+                ]
+            },
+
+            {
+                id: 9, phase: "Advanced", title: "Expose as API with Streaming", duration: "Day 8–9", icon: "🌐",
+                summary: "Wrap the agent in FastAPI and push progress via Server-Sent Events. Users should never stare at a blank screen for 5 minutes — real-time feedback is essential UX.",
+                concepts: [
+                    {
+                        h: "Why Streaming Matters",
+                        b: "Complex agent tasks can run for 2–5 minutes. Without streaming, the user sees nothing until it's done — a terrible experience that makes the system feel broken.\n\nWith Server-Sent Events (SSE), each tool call and progress update is pushed to the client in real time, making the agent feel fast and alive."
+                    },
+                    {
+                        h: "REST API Design",
+                        b: "POST   /agent/run              — start task, returns run_id\nGET    /agent/stream/{run_id}   — SSE stream of live step events\nGET    /agent/result/{run_id}   — fetch final result + generated files\nDELETE /agent/cancel/{run_id}   — cancel a running task immediately"
+                    }
+                ],
+                code: [
+                    "# api.py",
+                    "from fastapi import FastAPI",
+                    "from fastapi.responses import StreamingResponse",
+                    "from pydantic import BaseModel",
+                    "import asyncio, json, uuid",
+                    "",
+                    "app  = FastAPI()",
+                    "runs: dict = {}   # use Redis in production",
+                    "",
+                    "class TaskRequest(BaseModel):",
+                    "    task: str",
+                    "",
+                    "@app.post('/agent/run')",
+                    "async def start_run(req: TaskRequest):",
+                    "    run_id = str(uuid.uuid4())",
+                    "    runs[run_id] = {'status':'running','steps':[],'result':None}",
+                    "    asyncio.create_task(execute_agent(run_id, req.task))",
+                    "    return {'run_id': run_id}",
+                    "",
+                    "@app.get('/agent/stream/{run_id}')",
+                    "async def stream_run(run_id: str):",
+                    "    async def sse():",
+                    "        idx = 0",
+                    "        while True:",
+                    "            run = runs.get(run_id)",
+                    "            if not run: break",
+                    "            while idx < len(run['steps']):",
+                    "                yield f'data: {json.dumps(run[\"steps\"][idx])}\\n\\n'",
+                    "                idx += 1",
+                    "            if run['status'] == 'done':",
+                    '                yield \'data: {"type":"done"}\\n\\n\'',
+                    "                break",
+                    "            await asyncio.sleep(0.25)",
+                    "    return StreamingResponse(sse(), media_type='text/event-stream')",
+                    "",
+                    "async def execute_agent(run_id: str, task: str):",
+                    "    result = await StreamingAgent(run_id, runs).run(task)",
+                    "    runs[run_id].update({'status':'done','result':result})"
+                ]
+            },
+
+            {
+                id: 10, phase: "Ship It", title: "Test, Evaluate & Deploy", duration: "Day 9–10", icon: "🚀",
+                summary: "Run a systematic evaluation suite before shipping. Track pass rate, step efficiency, and cost per task — then deploy with the production checklist fully checked off.",
+                concepts: [
+                    {
+                        h: "How to Evaluate Your Agent",
+                        b: "Build a suite of 20–30 tasks with known correct outputs. Score each run:\n• Task completion rate — primary success metric\n• Steps taken — measures efficiency and prompt quality\n• Code correctness — verified via automated test assertions\n• Wall-clock time — directly impacts perceived quality\n\nHumanEval and MBPP are standard public benchmarks to compare against."
+                    },
+                    {
+                        h: "Production Deployment Checklist",
+                        b: "✓ Docker sandbox: --network none, memory + CPU limits enforced\n✓ API keys stored in env vars — never hardcoded in source code\n✓ Rate limiting on all public-facing API endpoints\n✓ MAX_STEPS enforced — prevents runaway cost on hard tasks\n✓ Structured JSON logging for every agent step taken\n✓ Token cost tracked per run (input + output tokens)\n✓ Global timeout on the entire run, not just per step\n✓ Tested on 20+ diverse tasks before going live"
+                    },
+                    {
+                        h: "Deployment Options by Scale",
+                        b: "Simple: VPS (Hetzner / DigitalOcean) behind nginx + systemd\nScalable: Docker Compose — API and sandbox runner as separate services\nCloud-native: AWS ECS or GCP Cloud Run, with Firecracker for isolation"
+                    }
+                ],
+                code: [
+                    "# eval/run_evals.py",
+                    "import json",
+                    "from agent.core import CodingAgent",
+                    "",
+                    "EVAL_TASKS = [",
+                    "    {",
+                    '        "task": "Write a function to reverse a linked list",',
+                    '        "test": "assert reverse([1,2,3]) == [3,2,1]",',
+                    "    },",
+                    "    {",
+                    '        "task": "Implement binary search",',
+                    '        "test": "assert binary_search([1,3,5,7,9], 5) == 2",',
+                    "    },",
+                    "    # ... add 20+ more tasks with deterministic assertions",
+                    "]",
+                    "",
+                    "def run_evals():",
+                    "    agent, results = CodingAgent(), []",
+                    "    for i, ev in enumerate(EVAL_TASKS):",
+                    "        print(f'Eval {i+1}/{len(EVAL_TASKS)}')",
+                    "        try:",
+                    '            result    = agent.run(ev["task"])',
+                    '            test_code = result + "\\n" + ev["test"]',
+                    "            passed    = agent.executor.run(test_code).exit_code == 0",
+                    "        except Exception as e:",
+                    "            passed, result = False, str(e)",
+                    "        results.append({",
+                    '            "task":ev["task"],"passed":passed,',
+                    '            "steps":agent.last_step_count',
+                    "        })",
+                    "    n = len(results)",
+                    "    print(f'Pass rate: {sum(r[\"passed\"] for r in results)/n:.1%}')",
+                    "    print(f'Avg steps: {sum(r[\"steps\"] for r in results)/n:.1f}')",
+                    "    with open('eval_results.json','w') as f:",
+                    "        json.dump(results, f, indent=2)",
+                    "",
+                    "if __name__ == '__main__': run_evals()"
+                ]
+            }
+        ];
+
+        /* ── State ── */
+        let cur = 1, showCode = true, sidebarOpen = false;
+
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
+            document.getElementById('sidebar').classList.toggle('open', sidebarOpen);
+            document.getElementById('overlay').classList.toggle('open', sidebarOpen);
+        }
+        function closeSidebar() {
+            sidebarOpen = false;
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('open');
+        }
+
+        /* ── Syntax ── */
+        function hl(line) {
+            if (!line.trim()) return '\u00a0';
+            const e = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            if (line.trim().startsWith('#')) return `<span class="sc">${e(line)}</span>`;
+            if (/^\s*('"""|"""|''')/.test(line)) return `<span class="ss">${e(line)}</span>`;
+            const re = /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\b(def|class|return|import|from|if|elif|else|for|while|try|except|raise|with|async|await|pass|in|not|and|or|True|False|None|lambda|yield|as)\b|\b(self|cls)\b|\b\d[\d_.]*\b)/g;
+            let out = '', last = 0, m;
+            while ((m = re.exec(line)) !== null) {
+                if (m.index > last) out += `<span style="color:#bcc8e8">${e(line.slice(last, m.index))}</span>`;
+                const v = m[0];
+                let c = 'style="color:#bcc8e8"';
+                if (v[0] === '"' || v[0] === "'") c = 'class="ss"';
+                else if (m[2]) c = 'class="sk"';
+                else if (m[3]) c = 'class="sl"';
+                else if (/^\d/.test(v)) c = 'class="sn"';
+                out += `<span ${c}>${e(v)}</span>`;
+                last = m.index + v.length;
+            }
+            if (last < line.length) out += `<span style="color:#bcc8e8">${e(line.slice(last))}</span>`;
+            return out;
+        }
+
+        /* ── Sidebar ── */
+        function renderSidebar() {
+            const phases = [...new Set(STEPS.map(s => s.phase))];
+            let h = '';
+            phases.forEach(ph => {
+                const color = PC[ph];
+                h += `<div class="phase-group"><span class="phase-lbl" style="color:${color}90">${ph}</span>`;
+                STEPS.filter(s => s.phase === ph).forEach(s => {
+                    const a = s.id === cur;
+                    h += `<button class="step-btn ${a ? 'active' : ''}" style="--c:${color}" onclick="goTo(${s.id});closeSidebar()">
+        <div class="s-icon">${s.icon}</div>
+        <div class="s-text">
+          <div class="s-title">${s.title}</div>
+          <div class="s-day">${s.duration}</div>
+        </div>
+      </button>`;
+                });
+                h += '</div>';
+            });
+            document.getElementById('sidebar-scroll').innerHTML = h;
+        }
+
+        /* ── Main ── */
+        function renderMain() {
+            const step = STEPS.find(s => s.id === cur);
+            const col = PC[step.phase];
+            const pct = Math.round((cur / STEPS.length) * 100);
+
+            document.getElementById('progress-fill').style.cssText = `width:${pct}%;background:${col}`;
+            document.documentElement.style.setProperty('--c', col);
+
+            document.getElementById('topbar-title').textContent = step.title;
+            const ts = document.getElementById('topbar-step');
+            ts.textContent = `${cur}/${STEPS.length}`;
+            Object.assign(ts.style, { borderColor: col + '55', background: col + '18', color: col });
+
+            const concepts = step.concepts.map(c => `
+    <div class="concept-card">
+      <div class="concept-h">${c.h}</div>
+      <div class="concept-b">${eH(c.b)}</div>
+    </div>`).join('');
+
+            let codeBlock = '';
+            if (step.code) {
+                const rows = step.code.map((l, i) => `<tr><td class="ln">${i + 1}</td><td class="lc">${hl(l)}</td></tr>`).join('');
+                codeBlock = `<div class="code-section">
+      <div class="code-hdr">
+        <span class="eyebrow">Implementation</span>
+        <button class="toggle-btn" onclick="toggleCode()">${showCode ? '▾ Hide' : '▸ Show'} Code</button>
+      </div>
+      ${showCode ? `<div class="code-box">
+        <div class="code-topbar">
+          <div class="mac-dots">
+            <div class="mac-dot" style="background:#ff5f57"></div>
+            <div class="mac-dot" style="background:#febc2e"></div>
+            <div class="mac-dot" style="background:#28c840"></div>
+          </div>
+          <span class="code-lbl">Python</span>
+          <button class="copy-btn" id="copy-btn" onclick="copyCode()">Copy</button>
+        </div>
+        <div class="code-scroll">
+          <table class="ct"><tbody>${rows}</tbody></table>
+        </div>
+      </div>`: ``}
+    </div>`;
+            }
+
+            const pips = STEPS.map(s => `<div class="pip ${s.id === cur ? 'on' : ''}" style="${s.id === cur ? 'background:' + col : ''}" onclick="goTo(${s.id})"></div>`).join('');
+
+            document.getElementById('content').innerHTML = `
+    <div class="meta-row">
+      <div class="badge">Step ${step.id} of ${STEPS.length} · ${step.phase}</div>
+      <span class="day-tag">${step.duration}</span>
+    </div>
+    <h1 class="page-title"><span>${step.icon}</span>${step.title}</h1>
+    <p class="page-sum">${step.summary}</p>
+    <div class="eyebrow">Key Concepts</div>
+    ${concepts}
+    ${codeBlock}
+    <div class="nav-bar">
+      <button class="nav-btn" onclick="goTo(${cur - 1})" ${cur === 1 ? 'disabled' : ''}>← Prev</button>
+      <div class="pip-row">${pips}</div>
+      <button class="nav-btn fwd" onclick="goTo(${cur + 1})" ${cur === STEPS.length ? 'disabled' : ''}>Next →</button>
+    </div>`;
+
+            document.getElementById('main').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function eH(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        function goTo(id) {
+            if (id < 1 || id > STEPS.length) return;
+            cur = id; renderSidebar(); renderMain();
+        }
+
+        function toggleCode() { showCode = !showCode; renderMain(); }
+
+        function copyCode() {
+            const step = STEPS.find(s => s.id === cur);
+            if (!step.code) return;
+            navigator.clipboard.writeText(step.code.join('\n')).then(() => {
+                const btn = document.getElementById('copy-btn');
+                if (!btn) return;
+                btn.textContent = '✓ Copied'; btn.classList.add('ok');
+                setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 2000);
+            });
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(cur + 1);
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(cur - 1);
+            if (e.key === 'Escape') closeSidebar();
+        });
+
+        renderSidebar();
+        renderMain();
+    </script>
+</body>
+
+</html>
